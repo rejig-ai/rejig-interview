@@ -4,4 +4,4 @@ node_modules/
 dist/
 build/
 *.log
-.angular/cache/
+frontend/.angular/cache/

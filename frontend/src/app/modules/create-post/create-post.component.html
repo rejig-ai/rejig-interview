@@ -24,26 +24,18 @@
         <!-- Title -->
         <div class="mb-3">
           <label for="title" class="form-label">Title <span class="text-danger">*</span></label>
-          <input
-            id="title"
-            type="text"
-            class="form-control"
+          <input id="title" type="text" class="form-control"
             [class.is-invalid]="postForm.get('title')?.invalid && postForm.get('title')?.touched"
-            formControlName="title"
-            placeholder="e.g. 3BR Luxury Home in Maplewood"
-          />
+            formControlName="title" placeholder="e.g. 3BR Luxury Home in Maplewood" />
           <div class="invalid-feedback">Title is required.</div>
         </div>
 
         <!-- Platform -->
         <div class="mb-3">
           <label for="platform" class="form-label">Platform <span class="text-danger">*</span></label>
-          <select
-            id="platform"
-            class="form-select"
+          <select id="platform" class="form-select"
             [class.is-invalid]="postForm.get('platform')?.invalid && postForm.get('platform')?.touched"
-            formControlName="platform"
-          >
+            formControlName="platform">
             <option value="">Select a platform</option>
             <option value="instagram">Instagram</option>
             <option value="facebook">Facebook</option>
@@ -55,38 +47,23 @@
         <!-- Caption -->
         <div class="mb-3">
           <label for="caption" class="form-label">Caption <span class="text-danger">*</span></label>
-          <textarea
-            id="caption"
-            class="form-control"
-            rows="4"
+          <textarea id="caption" class="form-control" rows="4"
             [class.is-invalid]="postForm.get('caption')?.invalid && postForm.get('caption')?.touched"
-            formControlName="caption"
-            placeholder="Write your post caption here…"
-          ></textarea>
+            formControlName="caption" placeholder="Write your post caption here…"></textarea>
           <div class="invalid-feedback">Caption is required.</div>
         </div>
 
         <!-- Scheduled Date (optional) -->
         <div class="mb-4">
-          <label for="scheduled_date" class="form-label">Schedule Date <span class="text-muted small">(optional)</span></label>
-          <input
-            id="scheduled_date"
-            type="date"
-            class="form-control"
-            formControlName="scheduled_date"
-          />
+          <label for="scheduled_date" class="form-label">Schedule Date <span
+              class="text-muted small">(optional)</span></label>
+          <input id="scheduled_date" type="date" class="form-control" formControlName="scheduled_date" />
         </div>
 
-        <!-- Submit button — BUG 1: [disabled]="postForm.valid" should be [disabled]="!postForm.valid" -->
-        <!-- The button is disabled when the form IS valid, preventing submission entirely. -->
-        <!-- Fix: add the missing ! operator so it reads [disabled]="!postForm.valid"       -->
         <div class="d-grid">
-          <button
-            type="submit"
-            class="btn btn-primary"
-            [disabled]="postForm.valid"
-          >
-            <span *ngIf="submitting" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          <button type="submit" class="btn btn-primary" [disabled]="postForm.valid">
+            <span *ngIf="submitting" class="spinner-border spinner-border-sm me-2" role="status"
+              aria-hidden="true"></span>
             Create Post
           </button>
         </div>
