@@ -1,0 +1,30 @@
+// Bootstrap is already loaded via angular.json styles array.
+// Global overrides and base styles.
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background-color: #f8f9fa;
+  color: #212529;
+}
+
+// Navbar brand colour
+.navbar-brand {
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+
+// Status badges
+.badge-published {
+  background-color: #198754;
+  color: #fff;
+}
+
+.badge-draft {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+// Utility
+.cursor-pointer {
+  cursor: pointer;
+}

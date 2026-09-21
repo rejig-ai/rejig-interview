@@ -1,0 +1,98 @@
+<div class="container py-4" style="max-width: 640px;">
+
+  <!-- Back link -->
+  <a routerLink="/dashboard" class="text-muted text-decoration-none small">
+    &larr; Back to Dashboard
+  </a>
+
+  <div class="card shadow-sm mt-3">
+    <div class="card-body p-4">
+      <h2 class="card-title h5 mb-4">Create New Post</h2>
+
+      <!-- Success alert -->
+      <div *ngIf="success" class="alert alert-success">
+        Post created successfully! Redirecting to dashboard&hellip;
+      </div>
+
+      <!-- Error alert -->
+      <div *ngIf="error" class="alert alert-danger">
+        {{ error }}
+      </div>
+
+      <form [formGroup]="postForm" (ngSubmit)="onSubmit()">
+
+        <!-- Title -->
+        <div class="mb-3">
+          <label for="title" class="form-label">Title <span class="text-danger">*</span></label>
+          <input
+            id="title"
+            type="text"
+            class="form-control"
+            [class.is-invalid]="postForm.get('title')?.invalid && postForm.get('title')?.touched"
+            formControlName="title"
+            placeholder="e.g. 3BR Luxury Home in Maplewood"
+          />
+          <div class="invalid-feedback">Title is required.</div>
+        </div>
+
+        <!-- Platform -->
+        <div class="mb-3">
+          <label for="platform" class="form-label">Platform <span class="text-danger">*</span></label>
+          <select
+            id="platform"
+            class="form-select"
+            [class.is-invalid]="postForm.get('platform')?.invalid && postForm.get('platform')?.touched"
+            formControlName="platform"
+          >
+            <option value="">Select a platform</option>
+            <option value="instagram">Instagram</option>
+            <option value="facebook">Facebook</option>
+            <option value="linkedin">LinkedIn</option>
+          </select>
+          <div class="invalid-feedback">Platform is required.</div>
+        </div>
+
+        <!-- Caption -->
+        <div class="mb-3">
+          <label for="caption" class="form-label">Caption <span class="text-danger">*</span></label>
+          <textarea
+            id="caption"
+            class="form-control"
+            rows="4"
+            [class.is-invalid]="postForm.get('caption')?.invalid && postForm.get('caption')?.touched"
+            formControlName="caption"
+            placeholder="Write your post caption here…"
+          ></textarea>
+          <div class="invalid-feedback">Caption is required.</div>
+        </div>
+
+        <!-- Scheduled Date (optional) -->
+        <div class="mb-4">
+          <label for="scheduled_date" class="form-label">Schedule Date <span class="text-muted small">(optional)</span></label>
+          <input
+            id="scheduled_date"
+            type="date"
+            class="form-control"
+            formControlName="scheduled_date"
+          />
+        </div>
+
+        <!-- Submit button — BUG 1: [disabled]="postForm.valid" should be [disabled]="!postForm.valid" -->
+        <!-- The button is disabled when the form IS valid, preventing submission entirely. -->
+        <!-- Fix: add the missing ! operator so it reads [disabled]="!postForm.valid"       -->
+        <div class="d-grid">
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="postForm.valid"
+          >
+            <span *ngIf="submitting" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            Create Post
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+</div>

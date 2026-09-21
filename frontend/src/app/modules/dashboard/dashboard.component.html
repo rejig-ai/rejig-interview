@@ -1,0 +1,103 @@
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <span class="navbar-brand">Rejig Post Manager</span>
+    <div class="d-flex align-items-center gap-3">
+      <span class="text-white-50 small">{{ getUserName() }}</span>
+      <button class="btn btn-sm btn-outline-light" (click)="logout()">Logout</button>
+    </div>
+  </div>
+</nav>
+
+<!-- Main content -->
+<div class="container py-4">
+
+  <h2 class="mb-4">My Posts</h2>
+
+  <!-- Toolbar -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="d-flex align-items-center gap-2">
+      <label for="statusFilter" class="form-label mb-0 text-muted small">Filter:</label>
+      <select
+        id="statusFilter"
+        class="form-select form-select-sm"
+        style="width: auto;"
+        [(ngModel)]="selectedStatus"
+        (change)="onStatusChange()"
+      >
+        <option value="">All</option>
+        <option value="draft">Draft</option>
+        <option value="published">Published</option>
+      </select>
+    </div>
+    <a routerLink="/posts/new" class="btn btn-primary btn-sm">+ New Post</a>
+  </div>
+
+  <!-- Loading spinner -->
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <!-- Posts table -->
+  <div *ngIf="!loading" class="card shadow-sm">
+    <div class="table-responsive">
+      <table class="table table-hover mb-0 align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>Title</th>
+            <th>Platform</th>
+            <th>Status</th>
+            <th>Created</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let post of filteredPosts">
+            <td>{{ post.title }}</td>
+            <td class="text-capitalize">{{ post.platform }}</td>
+            <td>
+              <span
+                class="badge"
+                [class.badge-published]="post.status === 'published'"
+                [class.badge-draft]="post.status === 'draft'"
+              >
+                {{ post.status }}
+              </span>
+            </td>
+            <td>{{ post.created_at | date:'mediumDate' }}</td>
+            <td>
+              <a [routerLink]="['/posts', post._id]" class="btn btn-sm btn-outline-secondary">View</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Empty state -->
+    <div *ngIf="!loading && filteredPosts.length === 0" class="text-center py-5 text-muted">
+      <p class="mb-0">No posts found.</p>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div *ngIf="!loading && totalPages > 0" class="d-flex justify-content-center align-items-center gap-3 mt-4">
+    <button
+      class="btn btn-sm btn-outline-secondary"
+      [disabled]="currentPage === 1"
+      (click)="goToPage(currentPage - 1)"
+    >
+      Previous
+    </button>
+    <span class="small text-muted">Page {{ currentPage }} of {{ totalPages }}</span>
+    <button
+      class="btn btn-sm btn-outline-secondary"
+      [disabled]="currentPage === totalPages || totalPages === 0"
+      (click)="goToPage(currentPage + 1)"
+    >
+      Next
+    </button>
+  </div>
+
+</div>

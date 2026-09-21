@@ -1,0 +1,68 @@
+<div class="container py-4" style="max-width: 700px;">
+
+  <!-- Back link -->
+  <a routerLink="/dashboard" class="text-muted text-decoration-none small">
+    &larr; Back to Dashboard
+  </a>
+
+  <!-- Loading spinner -->
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading post&hellip;</span>
+    </div>
+  </div>
+
+  <!-- Error message -->
+  <div *ngIf="error && !loading" class="alert alert-danger mt-3">
+    {{ error }}
+  </div>
+
+  <!-- Post card -->
+  <div *ngIf="post && !loading" class="card shadow-sm mt-3">
+    <div class="card-body p-4">
+
+      <!-- Header row -->
+      <div class="d-flex justify-content-between align-items-start mb-3">
+        <h2 class="card-title h5 mb-0">{{ post?.title }}</h2>
+        <span
+          class="badge"
+          [class.badge-published]="post?.status === 'published'"
+          [class.badge-draft]="post?.status === 'draft'"
+        >
+          {{ post?.status }}
+        </span>
+      </div>
+
+      <!-- Meta row -->
+      <div class="d-flex gap-3 mb-4 text-muted small">
+        <span class="text-capitalize">&#x1F4F1; {{ post?.platform }}</span>
+        <span>&#x1F4C5; {{ post?.created_at | date:'mediumDate' }}</span>
+        <span *ngIf="post?.scheduled_date">&#x23F0; Scheduled: {{ post?.scheduled_date | date:'mediumDate' }}</span>
+      </div>
+
+      <!-- Caption -->
+      <div class="mb-4">
+        <h6 class="text-muted text-uppercase small fw-bold mb-2">Caption</h6>
+        <p class="mb-0" style="white-space: pre-line;">{{ post?.caption }}</p>
+      </div>
+
+      <!-- Post ID note -->
+      <div class="text-muted small mb-4">
+        Post ID: {{ post?._id }}
+      </div>
+
+      <!-- Toggle Status button -->
+      <button
+        class="btn btn-outline-primary"
+        (click)="toggleStatus()"
+        [disabled]="updating"
+      >
+        <span *ngIf="updating" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+        <span *ngIf="post?.status === 'draft'">Publish Post</span>
+        <span *ngIf="post?.status === 'published'">Revert to Draft</span>
+      </button>
+
+    </div>
+  </div>
+
+</div>

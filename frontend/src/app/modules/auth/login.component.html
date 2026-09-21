@@ -1,0 +1,74 @@
+<div class="min-vh-100 d-flex align-items-center justify-content-center">
+  <div class="card shadow-sm" style="width: 100%; max-width: 420px;">
+    <div class="card-body p-4">
+
+      <div class="text-center mb-4">
+        <h1 class="h4 fw-bold mb-1">Rejig Post Manager</h1>
+        <p class="text-muted small">Sign in to your account</p>
+      </div>
+
+      <form [formGroup]="loginForm" (ngSubmit)="login()">
+
+        <!-- Email -->
+        <div class="mb-3">
+          <label for="email" class="form-label">Email address</label>
+          <input
+            id="email"
+            type="email"
+            class="form-control"
+            [class.is-invalid]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
+            formControlName="email"
+            placeholder="you@example.com"
+            autocomplete="email"
+          />
+          <div class="invalid-feedback">
+            <span *ngIf="loginForm.get('email')?.errors?.['required']">Email is required.</span>
+            <span *ngIf="loginForm.get('email')?.errors?.['email']">Must be a valid email address.</span>
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="mb-4">
+          <label for="password" class="form-label">Password</label>
+          <input
+            id="password"
+            type="password"
+            class="form-control"
+            [class.is-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+            formControlName="password"
+            placeholder="••••••"
+            autocomplete="current-password"
+          />
+          <div class="invalid-feedback">
+            <span *ngIf="loginForm.get('password')?.errors?.['required']">Password is required.</span>
+            <span *ngIf="loginForm.get('password')?.errors?.['minlength']">Password must be at least 6 characters.</span>
+          </div>
+        </div>
+
+        <!-- Error alert -->
+        <div *ngIf="errorMessage" class="alert alert-danger py-2 small" role="alert">
+          {{ errorMessage }}
+        </div>
+
+        <!-- Submit -->
+        <div class="d-grid">
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="loading"
+          >
+            <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            Sign In
+          </button>
+        </div>
+
+      </form>
+
+      <!-- Demo credentials hint -->
+      <div class="mt-4 text-center text-muted small">
+        <strong>Demo:</strong> alice@rejig.ai / password123
+      </div>
+
+    </div>
+  </div>
+</div>
