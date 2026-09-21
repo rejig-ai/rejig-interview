@@ -1,23 +1,26 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { ApiService } from '../../services/api.service';
-import { Post } from '../../models/post.model';
+import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
+import { ApiService } from "../../services/api.service";
+import { Post } from "../../models/post.model";
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  selector: "app-dashboard",
+  templateUrl: "./dashboard.component.html",
+  styleUrls: ["./dashboard.component.scss"],
 })
 export class DashboardComponent implements OnInit {
   posts: Post[] = [];
   filteredPosts: Post[] = [];
-  selectedStatus = '';
+  selectedStatus = "";
   loading = false;
   currentPage = 1;
   totalPosts = 0;
   limit = 10;
 
-  constructor(private apiService: ApiService, private router: Router) {}
+  constructor(
+    private apiService: ApiService,
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {
     this.loadPosts();
@@ -34,20 +37,18 @@ export class DashboardComponent implements OnInit {
       },
       error: () => {
         this.loading = false;
-      }
+      },
     });
   }
 
-  // BUG 2: filter uses !== instead of ===
-  // When a status is selected, this shows posts that do NOT match the status.
-  // e.g. selecting "draft" shows all published posts, and vice-versa.
-  // Fix: change !== to ===
   applyFilter(): void {
     if (!this.selectedStatus) {
       this.filteredPosts = this.posts;
       return;
     }
-    this.filteredPosts = this.posts.filter(p => p.status !== this.selectedStatus); // BUG 2
+    this.filteredPosts = this.posts.filter(
+      (p) => p.status !== this.selectedStatus,
+    );
   }
 
   onStatusChange(): void {
@@ -64,17 +65,17 @@ export class DashboardComponent implements OnInit {
   }
 
   logout(): void {
-    localStorage.removeItem('rejig_token');
-    localStorage.removeItem('rejig_user');
-    this.router.navigate(['/login']);
+    localStorage.removeItem("rejig_token");
+    localStorage.removeItem("rejig_user");
+    this.router.navigate(["/login"]);
   }
 
   getUserName(): string {
     try {
-      const user = JSON.parse(localStorage.getItem('rejig_user') || '{}');
-      return user.name || 'User';
+      const user = JSON.parse(localStorage.getItem("rejig_user") || "{}");
+      return user.name || "User";
     } catch {
-      return 'User';
+      return "User";
     }
   }
 }

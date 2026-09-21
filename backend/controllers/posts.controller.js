@@ -1,31 +1,30 @@
-'use strict';
+"use strict";
 
-const { getPostsByDomain, getPostById, createPost, updatePostStatus } = require('../data/store');
+const {
+  getPostsByDomain,
+  getPostById,
+  createPost,
+  updatePostStatus,
+} = require("../data/store");
 
 // ---------------------------------------------------------------------------
 // GET /posts
 // ---------------------------------------------------------------------------
 function getPosts(req, res) {
-  // BUG 5: req.query.domain_id must never be trusted — use req.user.domain_id only
-  // An attacker can supply any domain_id via the query string, bypassing JWT auth.
-  // Fix: const domain_id = req.user.domain_id;
-  const domain_id = req.query.domain_id || req.user.domain_id; // BUG 5
+  const domain_id = req.query.domain_id || req.user.domain_id;
 
   const page = parseInt(req.query.page) || 1;
   const limit = 10;
 
-  // BUG 3: pagination offset is wrong — should be (page - 1) * limit
-  // With skip = page * limit, page 1 starts at offset 10, skipping the first 10 posts.
-  // Fix: const skip = (page - 1) * limit;
-  const skip = page * limit; // BUG 3
+  const skip = (page - 1) * limit;
 
-  const status = req.query.status || '';
+  const status = req.query.status || "";
 
   const { posts, total } = getPostsByDomain(domain_id, { skip, limit, status });
 
   return res.status(200).json({
     status: true,
-    message: 'OK',
+    message: "OK",
     data: { posts, total, page, limit },
   });
 }
@@ -40,14 +39,14 @@ function getPost(req, res) {
   if (!post) {
     return res.status(404).json({
       status: false,
-      message: 'Post not found',
+      message: "Post not found",
       data: null,
     });
   }
 
   return res.status(200).json({
     status: true,
-    message: 'OK',
+    message: "OK",
     data: post,
   });
 }
@@ -61,7 +60,7 @@ function createPostHandler(req, res) {
   if (!title || !caption || !platform) {
     return res.status(400).json({
       status: false,
-      message: 'title, caption, and platform are required',
+      message: "title, caption, and platform are required",
       data: null,
     });
   }
@@ -71,14 +70,14 @@ function createPostHandler(req, res) {
     caption,
     platform,
     scheduled_date: scheduled_date || null,
-    status: 'draft',
+    status: "draft",
     domain_id: req.user.domain_id,
     created_by: req.user._id,
   });
 
   return res.status(201).json({
     status: true,
-    message: 'POST_CREATED',
+    message: "POST_CREATED",
     data: post,
   });
 }
@@ -90,7 +89,7 @@ function updateStatus(req, res) {
   const { id } = req.params;
   const { status } = req.body || {};
 
-  if (!status || !['draft', 'published'].includes(status)) {
+  if (!status || !["draft", "published"].includes(status)) {
     return res.status(400).json({
       status: false,
       message: 'status must be "draft" or "published"',
@@ -103,16 +102,21 @@ function updateStatus(req, res) {
   if (!post) {
     return res.status(404).json({
       status: false,
-      message: 'Post not found',
+      message: "Post not found",
       data: null,
     });
   }
 
   return res.status(200).json({
     status: true,
-    message: 'STATUS_UPDATED',
+    message: "STATUS_UPDATED",
     data: post,
   });
 }
 
-module.exports = { getPosts, getPost, createPost: createPostHandler, updateStatus };
+module.exports = {
+  getPosts,
+  getPost,
+  createPost: createPostHandler,
+  updateStatus,
+};
