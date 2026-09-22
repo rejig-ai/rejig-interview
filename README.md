@@ -64,25 +64,3 @@ All authenticated responses follow the envelope:
 ```json
 { "status": true, "message": "...", "data": { ... } }
 ```
-
----
-
-## Candidate Instructions
-
-The codebase has **exactly 5 bugs** — one in each of the files listed below.
-Your task is to:
-
-1. Run the app and observe the broken behaviour.
-2. Locate the root cause in the source code.
-3. Fix the bug and verify the fix works correctly.
-
-You may use any tools you like (browser DevTools, `curl`, editor search, etc.).
-
-**Files to look at:**
-
-- `frontend/src/app/modules/create-post/create-post.component.html`
-- `frontend/src/app/modules/dashboard/dashboard.component.ts`
-- `frontend/src/app/services/api.service.ts`
-- `backend/controllers/posts.controller.js` (contains **two** bugs)
-
-Good luck!
